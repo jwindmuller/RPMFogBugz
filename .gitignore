@@ -1,0 +1,4 @@
+RPMFogBugz/bin/
+RPMFogBugz/obj/
+RPMFogBugz/publish/
+*.suo

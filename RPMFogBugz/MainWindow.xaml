@@ -1,0 +1,32 @@
+﻿<Window x:Class="RPMFogBugz.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login to FogBugz" Height="256" Width="525" ResizeMode="CanMinimize" Topmost="True" WindowStartupLocation="CenterScreen" BorderBrush="White" Closing="Window_Closing" StateChanged="Window_StateChanged" IsVisibleChanged="Window_IsVisibleChanged" Loaded="Window_Loaded">
+	<Grid Background="#FF25AAE1" Margin="0">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="44" />
+			<RowDefinition Height="44" />
+			<RowDefinition Height="44" />
+			<RowDefinition Height="44" />
+			<RowDefinition Height="44" />
+		</Grid.RowDefinitions>
+		<Label Content="Email" Margin="10,0,5,5" Height="28" VerticalAlignment="Bottom" FontSize="16" Grid.ColumnSpan="2" Foreground="White"/>
+		<TextBox x:Name="EmailTextBox" Grid.Row="1" FontSize="20" Height="36" VerticalAlignment="Top" Margin="10,0" Grid.ColumnSpan="2" BorderBrush="{x:Null}"/>
+		<Label Content="Password" Margin="10,0,5,5" Height="28" VerticalAlignment="Bottom" FontSize="16" Grid.Row="2" Grid.ColumnSpan="2" Foreground="White"/>
+		<PasswordBox x:Name="PasswordTextBox" Grid.Row="3" VerticalAlignment="Top" Height="40" Margin="10,0" Grid.ColumnSpan="2" FontSize="20" BorderBrush="{x:Null}" Padding="1,6,1,1"/>
+		<Button x:Name="LoginButton" Content="Login" Margin="384,0,10,5" Grid.Row="4" Height="34" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="LoginButton_Click">
+			<Button.Template>
+				<ControlTemplate TargetType="Button">
+					<TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+		<Border x:Name="ErrorContainer" Margin="-10,12,332,0" Grid.Row="4" VerticalAlignment="Top"  Background="#FF891010" Height="28" CornerRadius="4" Visibility="Hidden">
+			<Label Foreground="#FFEAB4B4" Content="Could not login, try again" Margin="22,0,0,0" FontSize="13" />
+		</Border>
+
+	</Grid>
+</Window>
