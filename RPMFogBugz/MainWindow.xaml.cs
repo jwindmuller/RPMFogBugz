@@ -26,6 +26,7 @@ namespace RPMFogBugz
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private string appName = "RpmFogBugz";
 		private string token = "";
 		private string email
 		{
@@ -83,6 +84,18 @@ namespace RPMFogBugz
 			contextMenu = new ContextMenuStrip();
 			ToolStripItem test = contextMenu.Items.Add("Update Cases");
 			test.Click += ContextItemSelected;
+
+			this.prePopulateLoginForm();
+		}
+
+		private void prePopulateLoginForm()
+		{
+			Credential userData = CredentialManager.ReadCredential(this.appName);
+			if (userData != null)
+			{
+				this.EmailTextBox.Text = userData.UserName;
+				this.PasswordTextBox.Password = userData.Password;
+			}
 		}
 
 		private void updateContextMenu() {
@@ -140,10 +153,11 @@ namespace RPMFogBugz
 			}
 			var parts = sender.ToString().Split('\n');
 			System.Windows.Clipboard.SetText(string.Format(
-				"{0}\n{1}",
+				"YOUR_COMMIT_MSG\n\n{0}\n{1}",
 				parts[0],
 				this.baseUrl + "?" + parts[0].Replace("BugzID: ", "")
 			));
+			notifyIcon.ShowBalloonTip(5000, parts[0] + " copied to clipboard...", "URL to case also included", ToolTipIcon.Info);
 		}
 
 		private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -153,11 +167,21 @@ namespace RPMFogBugz
 			XElement doc = this.sendRequest(
 				string.Format("?cmd=logon&email={0}&password={1}", this.email, this.password)
 			);
+
 			FogBugzError error = this.checkError(doc);
 			if (error != null)
 			{
 				this.ErrorContainer.Visibility = Visibility.Visible;
 				return;
+			}
+
+			if (this.RememberMeCheckBox.IsChecked == true)
+			{
+				CredentialManager.WriteCredential(this.appName, this.email, this.password);
+			}
+			else
+			{
+				CredentialManager.WriteCredential(this.appName, "", "");
 			}
 
 			IEnumerable<string> tokens = from tokenEl in doc.Descendants("token")
@@ -206,12 +230,9 @@ namespace RPMFogBugz
 
 		private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			CheckTrayIcon();
-		}
-
-		void CheckTrayIcon()
-		{
-			ShowTrayIcon(!IsVisible);
+			bool shouldShowTrayIcon = !this.IsVisible;
+			ShowTrayIcon(shouldShowTrayIcon);
+			this.prePopulateLoginForm();
 		}
 
 		void ShowTrayIcon(bool show)

@@ -32,7 +32,7 @@
 		<Label Content="Password" Margin="10,0,5,5" Height="28" VerticalAlignment="Bottom" FontSize="16" Grid.Row="3" Foreground="White"/>
 		<PasswordBox x:Name="PasswordTextBox" Grid.Row="4" VerticalAlignment="Top" Height="40" Margin="10,0" FontSize="20" BorderBrush="{x:Null}" Padding="1,6,1,1"/>
 		<!-- Row -->
-		<CheckBox Content="Remember me" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="5" Foreground="White" IsChecked="True"/>
+		<CheckBox x:Name="RememberMeCheckBox" Content="Remember me" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="5" Foreground="White" IsChecked="True"/>
 
 		<!-- Row -->
 		<Frame Background="#19FFFFFF" Grid.Row="6" />
