@@ -201,7 +201,14 @@ namespace RPMFogBugz
 				this.WindowState = WindowState.Normal;
 				return;
 			}
-			this.contextMenu.Show(System.Windows.Forms.Control.MousePosition);
+			if (this.contextMenu.Visible)
+			{
+				this.contextMenu.Hide();
+			}
+			else
+			{
+				this.contextMenu.Show(System.Windows.Forms.Control.MousePosition);
+			}
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
