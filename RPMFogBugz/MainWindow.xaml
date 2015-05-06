@@ -19,7 +19,7 @@
 			
 		</Label>
 		<Rectangle Grid.Row="0" Fill="#19FFFFFF" />
-		<Button x:Name="CloseButton" Content="Ð" Margin="477,0,0,0" Grid.Row="0" Background="#FFFFB6B6" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="CloseButton_Click" FontFamily="Wingdings 2" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+		<Button x:Name="CloseButton" Content="Ð" Margin="477,0,0,0" Grid.Row="0" Background="#FFFFB6B6" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="CloseButton_Click" FontFamily="Wingdings 2" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Right" Width="48">
 			<Button.Template>
 				<ControlTemplate TargetType="Button">
 					<TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Padding="0,8,0,0" Background="#FF891010" Margin="0" SnapsToDevicePixels="True" UseLayoutRounding="False" TextDecorations="{x:Null}" />

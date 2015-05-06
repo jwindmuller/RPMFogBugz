@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
+//using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -57,12 +57,27 @@ namespace RPMFogBugz
 			}
 		}
 
+		private CasesWindow _casesWindow = null;
+		private CasesWindow casesWindow
+		{
+			get
+			{
+				if (_casesWindow == null)
+				{
+					_casesWindow = new CasesWindow();
+				}
+				return _casesWindow;
+			}
+		}
+
 		private ContextMenuStrip contextMenu;
 		private NotifyIcon notifyIcon;
 		public MainWindow()
 		{
 			InitializeComponent();
 		}
+
+		private List<CaseInformation> cases;
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -99,7 +114,7 @@ namespace RPMFogBugz
 		}
 
 		private void updateContextMenu() {
-			string[] cols = new string[] {"ixBug", "sTitle"};
+			string[] cols = new string[] {"ixBug", "sTitle", "sProject"};
 
 			XElement doc = this.sendRequest(
 				string.Format(
@@ -110,18 +125,29 @@ namespace RPMFogBugz
 				)
 			);
 
-			var cases = from caseEl in doc.Descendants("case")
-						select new
-						{
-							CaseNumber = caseEl.Attribute("ixBug").Value,
-							CaseTitle  = (from titleEl in caseEl.Descendants("sTitle") select titleEl).First().Value
-						};
+			FogBugzError error = this.checkError(doc);
+			if (error != null)
+			{
+				// TODO: report error
+				return;
+			}
+
+			cases = (from caseEl in doc.Descendants("case")
+					 select new
+					 {
+						 CaseNumber  = caseEl.Attribute("ixBug").Value,
+						 CaseTitle   = (from titleEl in caseEl.Descendants("sTitle") select titleEl).First().Value,
+						 CaseProject = (from projectEl in caseEl.Descendants("sProject") select projectEl).First().Value
+					 }).AsEnumerable()
+					 .Select(
+						c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject)
+					 ).ToList();
 
 			contextMenu.Items.Clear();
-			foreach (var foundCase in cases)
+			foreach (CaseInformation caseInfo in cases)
 			{
 				ToolStripItem caseItem = contextMenu.Items.Add(
-					string.Format("BugzID: {0}\n{1}", foundCase.CaseNumber, foundCase.CaseTitle)
+					string.Format("BugzID: {0}\n{1}", caseInfo.number, caseInfo.title)
 				);
 				caseItem.Click += ContextItemSelected;
 			}
@@ -131,6 +157,8 @@ namespace RPMFogBugz
 
 			ToolStripItem logOutItem = contextMenu.Items.Add("Log out");
 			logOutItem.Click += ContextItemSelected;
+
+			this.casesWindow.cases = this.cases;
 		}
 
 		private void ContextItemSelected(object sender, EventArgs e)
@@ -195,20 +223,32 @@ namespace RPMFogBugz
 
 		void notifyIcon_Click(object sender, EventArgs e)
 		{
-			if (this.token == "")
-			{
-				this.Show();
-				this.WindowState = WindowState.Normal;
-				return;
-			}
-			if (this.contextMenu.Visible)
-			{
-				this.contextMenu.Hide();
-			}
-			else
+			MouseEventArgs clickEvent = (MouseEventArgs)e;
+			if (clickEvent.Button == MouseButtons.Right)
 			{
 				this.contextMenu.Show(System.Windows.Forms.Control.MousePosition);
 			}
+			else
+			{
+				this.casesWindow.WindowState = WindowState.Normal;
+				this.casesWindow.Show();
+			}
+
+			
+			//if (this.token == "")
+			//{
+			//	this.Show();
+			//	this.WindowState = WindowState.Normal;
+			//	return;
+			//}
+			//if (this.contextMenu.Visible)
+			//{
+			//	this.contextMenu.Hide();
+			//}
+			//else
+			//{
+			//	this.contextMenu.Show(System.Windows.Forms.Control.MousePosition);
+			//}
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -285,7 +325,7 @@ namespace RPMFogBugz
 
 		private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			if (e.ChangedButton == MouseButton.Left)
+			if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
 			{
 				this.DragMove();
 			}
