@@ -26,7 +26,7 @@
 		</Button>
 
 		<Rectangle Grid.Row="1" Fill="#3FFFFFFF" Margin="11,10,11,-1" />
-		<TextBox  Grid.Row="1"   Margin="11,10,11,0" Background="{x:Null}" Text="Filter..." FontSize="16" BorderThickness="1" Padding="1,6,1,1" Foreground="#CC000000" GotFocus="TextBox_GotFocus"   x:Name="SearchBox" LostFocus="SearchBox_LostFocus" KeyUp="SearchBox_KeyUp">
+		<TextBox  Grid.Row="1"   Margin="11,10,11,-2" Background="{x:Null}" Text="Filter..." FontSize="16" BorderThickness="1" Padding="1,6,1,1" Foreground="#CC000000" GotFocus="TextBox_GotFocus"   x:Name="SearchBox" LostFocus="SearchBox_LostFocus" KeyUp="SearchBox_KeyUp">
 			<TextBox.BorderBrush>
 				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 					<GradientStop Color="#7FFFFFFF" Offset="0"/>

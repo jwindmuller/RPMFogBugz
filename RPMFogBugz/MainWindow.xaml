@@ -36,7 +36,7 @@
 
 		<!-- Row -->
 		<Frame Background="#19FFFFFF" Grid.Row="6" />
-		<Button x:Name="LoginButton" Content="Login" Margin="384,0,10,0" Grid.Row="6" Height="34" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="LoginButton_Click">
+		<Button x:Name="LoginButton" Content="Login" Margin="384,0,10,8" Grid.Row="6" Height="34" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="LoginButton_Click" VerticalAlignment="Bottom">
 			<Button.Template>
 				<ControlTemplate TargetType="Button">
 					<TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
