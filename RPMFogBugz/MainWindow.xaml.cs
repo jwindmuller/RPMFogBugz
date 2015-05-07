@@ -163,6 +163,7 @@ namespace RPMFogBugz
 			}
 
 			this.updateContextMenu();
+			this.showCasesWindow();
 
 			WindowState = WindowState.Minimized;
 		}
@@ -176,9 +177,14 @@ namespace RPMFogBugz
 			}
 			else
 			{
-				this.casesWindow.Show();
-				this.casesWindow.WindowState = WindowState.Normal;
+				this.showCasesWindow();
 			}
+		}
+
+		private void showCasesWindow()
+		{
+			this.casesWindow.Show();
+			this.casesWindow.WindowState = WindowState.Normal;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
