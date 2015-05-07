@@ -45,6 +45,21 @@ namespace RPMFogBugz
 			this.WindowState = WindowState.Minimized;
 		}
 
+		private WindowState storedWindowState = WindowState.Normal;
+		void Window_StateChanged(object sender, EventArgs args)
+		{
+			if (WindowState == WindowState.Minimized)
+			{
+				Hide();
+			}
+			else
+			{
+				Show();
+                Activate();
+				storedWindowState = WindowState;
+			}
+		}
+
 		private void updateList()
 		{
 			this.data = this.cases;
