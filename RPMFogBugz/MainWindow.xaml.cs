@@ -115,56 +115,52 @@ namespace RPMFogBugz
 			}
 		}
 
-        private void updateCasesData()
-        {
-            string[] cols = new string[] { "ixBug", "sTitle", "sProject" };
+		private void updateCasesData()
+		{
+			string[] cols = new string[] { "ixBug", "sTitle", "sProject" };
 
-            XElement doc = this.sendRequest(
-                string.Format(
-                    "?token={0}&cmd=search&q={1}&cols={2}",
-                    this.token,
-                    "assignedto:\"joaquin\" project:\"development\"",
-                    string.Join(",", cols)
-                )
-            );
+			XElement doc = this.sendRequest(
+				string.Format(
+					"?token={0}&cmd=search&q={1}&cols={2}",
+					this.token,
+					"assignedto:\"joaquin\" project:\"development\"",
+					string.Join(",", cols)
+				)
+			);
 
-            FogBugzError error = this.checkError(doc);
-            if (error != null)
-            {
-                // TODO: report error
-                return;
-            }
+			FogBugzError error = this.checkError(doc);
+			if (error != null)
+			{
+				// TODO: report error
+				return;
+			}
 
-            this.cases = (from caseEl in doc.Descendants("case")
-                          select new
-                          {
-                              CaseNumber = caseEl.Attribute("ixBug").Value,
-                              CaseTitle = (from titleEl in caseEl.Descendants("sTitle") select titleEl).First().Value,
-                              CaseProject = (from projectEl in caseEl.Descendants("sProject") select projectEl).First().Value
-                          }).AsEnumerable()
-                          .Select(
-                             c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject)
-                          ).ToList();
-        }
+			this.cases = (from caseEl in doc.Descendants("case")
+						  select new
+						  {
+							  CaseNumber = caseEl.Attribute("ixBug").Value,
+							  CaseTitle = (from titleEl in caseEl.Descendants("sTitle") select titleEl).First().Value,
+							  CaseProject = (from projectEl in caseEl.Descendants("sProject") select projectEl).First().Value
+						  }).AsEnumerable()
+						  .Select(
+							 c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject)
+						  ).ToList();
+		}
 
 		private void updateContextMenu() {
-			
-
 			this.contextMenu.Items.Clear();
-            ToolStripItem refreshItem = this.contextMenu.Items.Add("Reload");
+			ToolStripItem refreshItem = this.contextMenu.Items.Add("Reload");
 			refreshItem.Click += ContextItemSelected;
 
 			ToolStripItem logOutItem = this.contextMenu.Items.Add("Log out");
 			logOutItem.Click += ContextItemSelected;
-
-			
 		}
 
 		private void ContextItemSelected(object sender, EventArgs e)
 		{
 			if (sender.ToString() == "Reload")
 			{
-                this.updateCasesData();
+				this.updateCasesData();
 				return;
 			}
 			if (sender.ToString() == "Log out")
@@ -175,8 +171,8 @@ namespace RPMFogBugz
 				this.contextMenu.Items.Clear();
 				this.Show();
 				this.WindowState = WindowState.Normal;
-                this.casesWindow.Close();
-                return;
+				this.casesWindow.Close();
+				return;
 			}
 		}
 
@@ -222,7 +218,7 @@ namespace RPMFogBugz
 			}
 			else
 			{
-                this.casesWindow.Show();
+				this.casesWindow.Show();
 				this.casesWindow.WindowState = WindowState.Normal;
 			}
 		}
@@ -296,13 +292,13 @@ namespace RPMFogBugz
 
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
 		{
-            //this.casesWindow.Close();
-            if (this.notifyIcon != null)
-            {
-                this.notifyIcon.Dispose();
-            }
+			//this.casesWindow.Close();
+			if (this.notifyIcon != null)
+			{
+				this.notifyIcon.Dispose();
+			}
 			this.Close();
-            System.Windows.Application.Current.Shutdown();
+			System.Windows.Application.Current.Shutdown();
 		}
 
 		private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
