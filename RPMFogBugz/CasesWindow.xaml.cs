@@ -22,22 +22,28 @@ namespace RPMFogBugz
 	{
 		private List<CaseInformation> data;
 		private List<CaseInformation> _cases;
-		public List<CaseInformation> cases
+		
+		private FogBugz fb
 		{
-			set
+			get
 			{
-				_cases = value;
-				this.updateList();
-			}
-			get {
-				return _cases;
+				return FogBugz.getInstance();
 			}
 		}
+
+		
 		CollectionViewSource dataSource;
 		public CasesWindow()
 		{
 			InitializeComponent();
 			dataSource = (CollectionViewSource)FindResource("CaseList");
+			this.fb.didUpdateCases += fb_didUpdateCases;
+			this.fb.updateCasesData();
+		}
+
+		private void fb_didUpdateCases(object sender, EventArgs e)
+		{
+			this.updateList();
 		}
 
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -55,14 +61,14 @@ namespace RPMFogBugz
 			else
 			{
 				Show();
-                Activate();
+				Activate();
 				storedWindowState = WindowState;
 			}
 		}
 
 		private void updateList()
 		{
-			this.data = this.cases;
+			this.data = this.fb.cases;
 			string searchTerm = this.SearchBox.Text.Trim().ToLower();
 			if (searchTerm != "filter...")
 			{
@@ -117,6 +123,16 @@ namespace RPMFogBugz
 		private void SearchBox_KeyUp(object sender, KeyEventArgs e)
 		{
 			this.updateList();
+		}
+
+		private void LogoutButton_Click(object sender, RoutedEventArgs e)
+		{
+			this.fb.logout();
+		}
+
+		private void RefreshButton_Click(object sender, RoutedEventArgs e)
+		{
+			this.fb.updateCasesData();
 		}
 	}
 }

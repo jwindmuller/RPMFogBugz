@@ -12,8 +12,9 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
 			<RowDefinition Height="45" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+        </Grid.RowDefinitions>
 
 		<Label Grid.Row="0" Content="Your FogBugz cases" Padding="10,6,5,0" Foreground="White" FontSize="14" />
 		<Rectangle Grid.Row="0" Fill="#19FFFFFF" />
@@ -74,5 +75,23 @@
 
 		</DataGrid>
 
-	</Grid>
+
+        <!-- Row -->
+        <Frame Background="#19FFFFFF" Grid.Row="4" />
+        <Button x:Name="LogoutButton" Content="Log out" Margin="0,0,20,8" Grid.Row="4" Height="34" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="LogoutButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="150">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button x:Name="RefreshButton" Content="Refresh data" Margin="20,0,10,8" Grid.Row="4" Height="34" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="White" BorderThickness="0" Click="RefreshButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="148">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
 </Window>
