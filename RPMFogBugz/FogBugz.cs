@@ -36,6 +36,7 @@ namespace RPMFogBugz
 			}
 		}
 
+		private string email;
 		public string token
 		{
 			get;
@@ -56,20 +57,50 @@ namespace RPMFogBugz
 			}
 		}
 
+		
+
 		public event EventHandler didUpdateCases;
 		public event EventHandler didLogout;
 		public void updateCasesData()
 		{
 			string[] cols = new string[] { "ixBug", "sTitle", "sProject" };
+			XElement people = this.sendRequest(
+				string.Format(
+					"?token={0}&cmd=listPeople",
+					this.token
+				)
+			);
+
+			if (this.checkError(people) != null)
+			{
+				this.logout();
+				return;
+			}
+
+			var currentUser = (from peopleEl in people.Descendants("person")
+					select new
+					{
+						FullName = (from nameEl in peopleEl.Descendants("sFullName") select nameEl).First().Value,
+						Email    = (from emailEl in peopleEl.Descendants("sEmail") select emailEl).First().Value
+					}).ToList().Find(
+						x => x.Email == this.email
+					);
 
 			XElement doc = this.sendRequest(
 				string.Format(
 					"?token={0}&cmd=search&q={1}&cols={2}",
 					this.token,
-					"assignedto:\"joaquin\" project:\"development\"",
+					string.Format("assignedto:\"{0}\" project:\"development\"", currentUser.FullName),
 					string.Join(",", cols)
 				)
 			);
+
+			if (this.checkError(people) != null)
+			{
+				this.logout();
+				return;
+			}
+
 
 			FogBugzError error = this.checkError(doc);
 			if (error != null)
@@ -102,6 +133,7 @@ namespace RPMFogBugz
 		}
 
 		public bool login(string email, string password) {
+			this.email = email;
 			XElement doc = this.sendRequest(
 				string.Format("?cmd=logon&email={0}&password={1}", email, password)
 			);
