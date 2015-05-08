@@ -63,7 +63,7 @@ namespace RPMFogBugz
 		public event EventHandler didLogout;
 		public void updateCasesData()
 		{
-			string[] cols = new string[] { "ixBug", "sTitle", "sProject" };
+			string[] cols = new string[] { "ixBug", "sTitle", "sProject", "sFixFor" };
 			XElement people = this.sendRequest(
 				string.Format(
 					"?token={0}&cmd=listPeople",
@@ -112,12 +112,13 @@ namespace RPMFogBugz
 			this.cases = (from caseEl in doc.Descendants("case")
 						  select new
 						  {
-							  CaseNumber = caseEl.Attribute("ixBug").Value,
-							  CaseTitle = (from titleEl in caseEl.Descendants("sTitle") select titleEl).First().Value,
-							  CaseProject = (from projectEl in caseEl.Descendants("sProject") select projectEl).First().Value
+							  CaseNumber    = caseEl.Attribute("ixBug").Value,
+							  CaseTitle     = (from e in caseEl.Descendants("sTitle") select e).First().Value,
+							  CaseProject   = (from e in caseEl.Descendants("sProject") select e).First().Value,
+							  CaseMilestone = (from e in caseEl.Descendants("sFixFor") select e).First().Value,
 						  }).AsEnumerable()
 						  .Select(
-							 c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject)
+							 c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject, c.CaseMilestone)
 						  ).ToList();
 		}
 

@@ -21,7 +21,6 @@ namespace RPMFogBugz
 	public partial class CasesWindow : Window
 	{
 		private List<CaseInformation> data;
-		private List<CaseInformation> _cases;
 		
 		private FogBugz fb
 		{
@@ -30,7 +29,7 @@ namespace RPMFogBugz
 				return FogBugz.getInstance();
 			}
 		}
-
+		private ListCollectionView grouped;
 		
 		CollectionViewSource dataSource;
 		public CasesWindow()
@@ -68,13 +67,16 @@ namespace RPMFogBugz
 
 		private void updateList()
 		{
+			
 			this.data = this.fb.cases;
 			string searchTerm = this.SearchBox.Text.Trim().ToLower();
 			if (searchTerm != "filter...")
 			{
 				this.data = this.data.Where(x => x.title.ToLower().Contains(searchTerm)).ToList();
 			}
-			this.dataSource.Source = this.data;
+			this.grouped = new ListCollectionView(this.data);
+			this.grouped.GroupDescriptions.Add(new PropertyGroupDescription("milestone"));
+			this.CasesList.ItemsSource = this.grouped; 
 		}
 
 		private void CopyButton_Click(object sender, RoutedEventArgs e)
