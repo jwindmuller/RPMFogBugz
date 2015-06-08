@@ -90,7 +90,7 @@ namespace RPMFogBugz
 				string.Format(
 					"?token={0}&cmd=search&q={1}&cols={2}",
 					this.token,
-					string.Format("assignedto:\"{0}\" project:\"development\"", currentUser.FullName),
+					string.Format("assignedto:\"{0}\"", currentUser.FullName),
 					string.Join(",", cols)
 				)
 			);

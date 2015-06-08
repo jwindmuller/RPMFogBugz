@@ -38,6 +38,7 @@
 		</TextBox>
 
 		<DataGrid x:Name="CasesList" Grid.Row="2" Margin="10,0,10,10" ItemsSource="{Binding grouped}" AutoGenerateColumns="False" Background="#E5F0F0F0" BorderBrush="#00688CAF" HorizontalGridLinesBrush="#FFA4A4A4" VerticalGridLinesBrush="#FFA4A4A4" RowBackground="#19FFFFFF" AreRowDetailsFrozen="True" SelectionMode="Single" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+			
 			<DataGrid.GroupStyle>
 				<GroupStyle>
 					<GroupStyle.HeaderTemplate>
@@ -73,6 +74,7 @@
 
 
 			<DataGrid.Columns>
+				<DataGridTextColumn Header="Project" Binding="{Binding Path=project}" SortDirection="Ascending" />
 
 				<DataGridHyperlinkColumn Header="Case" Binding="{Binding Path=url}" ContentBinding="{Binding Path=number}">
 					<DataGridHyperlinkColumn.ElementStyle>
@@ -83,7 +85,7 @@
 				</DataGridHyperlinkColumn>
 
 				<DataGridTextColumn Header="Title" Binding="{Binding Path=title}" />
-				<!--<DataGridTextColumn Header="Project" Binding="{Binding Path=project}" />-->
+				
 
 				<DataGridTemplateColumn Header="Commit message" >
 					<DataGridTemplateColumn.CellTemplate>

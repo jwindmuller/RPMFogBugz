@@ -18,15 +18,16 @@
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>1</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\DEV2\RPMFogBugz\</InstallUrl>
+    <MinimumRequiredVersion>1.0.0.20</MinimumRequiredVersion>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>19</ApplicationRevision>
+    <ApplicationRevision>22</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
