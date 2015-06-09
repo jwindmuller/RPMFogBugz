@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Collections;
+using System.Windows.Controls.Primitives;
 
 namespace RPMFogBugz
 {
@@ -129,12 +131,28 @@ namespace RPMFogBugz
 
 		private void LogoutButton_Click(object sender, RoutedEventArgs e)
 		{
+			this.fb.stopTrackingWork();
 			this.fb.logout();
 		}
 
 		private void RefreshButton_Click(object sender, RoutedEventArgs e)
 		{
 			this.fb.updateCasesData();
+		}
+
+		private void TrackWorkButton_Click(object sender, RoutedEventArgs e)
+		{
+			Hyperlink link = (Hyperlink)e.OriginalSource;
+			CaseInformation caseInfo = link.DataContext as CaseInformation;
+			
+			this.StopWorkButton.Visibility = System.Windows.Visibility.Visible;
+			this.fb.startTrackingWork(caseInfo.number);
+		}
+
+		private void StopWorkButton_Click(object sender, RoutedEventArgs e)
+		{
+			this.fb.stopTrackingWork();
+			this.StopWorkButton.Visibility = System.Windows.Visibility.Hidden;
 		}
 	}
 }

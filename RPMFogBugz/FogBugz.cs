@@ -122,6 +122,36 @@ namespace RPMFogBugz
 						  ).ToList();
 		}
 
+		public bool startTrackingWork(int caseID)
+		{
+			XElement doc = this.sendRequest(
+				string.Format("?cmd=startWork&ixBug={0}&token={1}", caseID, this.token)
+			);
+
+			FogBugzError error = this.checkError(doc);
+			if (error != null)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		public bool stopTrackingWork()
+		{
+			XElement doc = this.sendRequest(
+				string.Format("?cmd=stopWork&token={0}", this.token)
+			);
+
+			FogBugzError error = this.checkError(doc);
+			if (error != null)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
 		public XElement sendRequest(string query)
 		{
 			Task<HttpResponseMessage> request = this.client.GetAsync(query);
@@ -153,6 +183,7 @@ namespace RPMFogBugz
 
 		public void logout()
 		{
+			this.stopTrackingWork();
 			this.token = "";
 			this.didLogout(this, new EventArgs());
 		}
