@@ -88,7 +88,7 @@ namespace RPMFogBugz
 			CaseInformation caseInfo = link.DataContext as CaseInformation;
 
 			System.Windows.Clipboard.SetText(string.Format(
-				"YOUR_COMMIT_MSG\n\nBugzID: {0}\n{1}",
+				"YOUR_COMMIT_MSG\n\ncase: {0}\n{1}",
 				caseInfo.number,
 				caseInfo.url
 			));
