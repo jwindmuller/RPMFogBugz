@@ -108,18 +108,21 @@ namespace RPMFogBugz
 				// TODO: report error
 				return;
 			}
-
-			this.cases = (from caseEl in doc.Descendants("case")
+			List<CaseInformation> cases = (from caseEl in doc.Descendants("case")
 						  select new
 						  {
 							  CaseNumber    = caseEl.Attribute("ixBug").Value,
 							  CaseTitle     = (from e in caseEl.Descendants("sTitle") select e).First().Value,
 							  CaseProject   = (from e in caseEl.Descendants("sProject") select e).First().Value,
 							  CaseMilestone = (from e in caseEl.Descendants("sFixFor") select e).First().Value,
-						  }).AsEnumerable()
-						  .Select(
-							 c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject, c.CaseMilestone)
-						  ).ToList();
+						  }
+						).AsEnumerable()
+						.Select(
+							c => new CaseInformation(c.CaseTitle, int.Parse(c.CaseNumber), this.baseUrl + '?' + c.CaseNumber, c.CaseProject, c.CaseMilestone)
+						).ToList();
+
+			cases.Sort((c1, c2) => { return c1.number - c2.number; });
+			this.cases = cases; 
 		}
 
 		public bool startTrackingWork(int caseID)
